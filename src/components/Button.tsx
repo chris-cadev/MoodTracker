@@ -10,16 +10,15 @@ import { theme } from '../theme';
 
 interface ButtonProps extends PressableProps {
     title: string;
-    onPress: () => void;
 }
 
 export const Button: React.FC<ButtonProps> = ({ title, ...rest }) => {
     return (
-        <View style={styles.container}>
-            <Pressable {...rest}>
+        <Pressable {...rest}>
+            <View style={styles.container}>
                 <Text style={styles.text}>{title}</Text>
-            </Pressable>
-        </View>
+            </View>
+        </Pressable>
     );
 };
 
