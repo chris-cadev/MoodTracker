@@ -86,12 +86,12 @@ const styles = StyleSheet.create({
     },
     descriptionText: {
         color: theme.colorPurple,
-        fontWeight: 'bold',
-        fontSize: 10,
+        fontSize: 12,
         textAlign: 'center',
+        fontFamily: theme.fontFamilyBold,
     },
     questionText: {
-        fontWeight: 'bold',
         fontSize: 24,
+        fontFamily: theme.fontFamilyBold
     },
 });

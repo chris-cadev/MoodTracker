@@ -24,7 +24,11 @@ export const MoodItemRow: React.FC<MoodItemRowProps> = ({ item }) => {
 
 const styles = StyleSheet.create({
     moodValue: { textAlign: 'center', fontSize: 40, marginRight: 10 },
-    moodDate: { textAlign: 'center', color: theme.colorLavender },
+    moodDate: {
+        textAlign: 'center',
+        color: theme.colorLavender,
+        fontFamily: theme.fontFamilyRegular,
+    },
     moodItem: {
         backgroundColor: 'white',
         marginBottom: 10,
@@ -36,7 +40,7 @@ const styles = StyleSheet.create({
     moodDescription: {
         fontSize: 18,
         color: theme.colorPurple,
-        fontWeight: 'bold',
+        fontFamily: theme.fontFamilyBold,
     },
     iconAndDescription: { flexDirection: 'row', alignItems: 'center' },
 });
