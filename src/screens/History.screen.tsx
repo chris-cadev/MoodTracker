@@ -7,7 +7,7 @@ export const History: React.FC = () => {
     const { moodHistory } = useAppContext();
     return (
         <View style={styles.container}>
-            {moodHistory.map((item) => (
+            {moodHistory.slice().reverse().map((item) => (
                 <MoodItemRow key={item.timestamp} item={item} />
             ))}
         </View>

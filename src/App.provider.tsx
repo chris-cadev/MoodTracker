@@ -37,11 +37,13 @@ const setAppData = async (newData: AppData) => {
 type AppContextType = {
     moodHistory: MoodOptionWithTimestamp[];
     addMood: (mood: MoodOptionType) => void;
+    deleteMood: (mood: MoodOptionWithTimestamp) => void;
 };
 
 const defaultValue: AppContextType = {
     moodHistory: [],
     addMood: () => undefined,
+    deleteMood: () => undefined,
 };
 
 const AppContext = createContext<AppContextType>(defaultValue);
@@ -52,7 +54,7 @@ export const AppProvider: React.FC<{ children: React.ReactElement }> = ({
     children,
 }) => {
     const [moodHistory, setMoodHistory] = useState<MoodOptionWithTimestamp[]>([]);
-    const addMood = useCallback(
+    const handleAddMood = useCallback(
         (mood: MoodOptionType) => {
             setMoodHistory(current => {
                 const moods = [...current, { mood, timestamp: Date.now() }];
@@ -62,15 +64,28 @@ export const AppProvider: React.FC<{ children: React.ReactElement }> = ({
         },
         [setMoodHistory],
     );
+    const handleDeleteMood = useCallback(
+        (mood: MoodOptionWithTimestamp) => {
+            setMoodHistory(current => {
+                const moods = current.filter(item => item.timestamp !== mood.timestamp);
+                setAppData({ moods });
+                return moods;
+            });
+        },
+        [setMoodHistory],
+    );
     useEffect(() => {
-        getAppData().then((data) => {
-            if (data?.moods)
-                setMoodHistory(data?.moods)
+        getAppData().then(data => {
+            if (data?.moods) setMoodHistory(data?.moods);
         });
-    }, [setMoodHistory])
+    }, [setMoodHistory]);
     const value = useMemo(
-        () => ({ moodHistory, addMood }),
-        [moodHistory, addMood],
+        () => ({
+            moodHistory,
+            addMood: handleAddMood,
+            deleteMood: handleDeleteMood,
+        }),
+        [moodHistory, handleAddMood, handleDeleteMood],
     );
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

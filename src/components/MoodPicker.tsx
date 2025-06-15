@@ -47,7 +47,7 @@ export const MoodPicker: React.FC<MoodPickerProps> = ({ onSelect }) => {
                     </View>
                 ))}
             </View>
-            <Button title="Choose" onPress={handleOptionSelected} />
+            <Button disabled={!!selectedMood} title="Choose" onPress={handleOptionSelected} />
         </View>
     );
 };
