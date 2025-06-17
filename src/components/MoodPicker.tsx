@@ -47,7 +47,7 @@ export const MoodPicker: React.FC<MoodPickerProps> = ({ onSelect }) => {
                     </View>
                 ))}
             </View>
-            <Button disabled={!!selectedMood} title="Choose" onPress={handleOptionSelected} />
+            <Button disabled={Boolean(selectedMood)} title="Choose" onPress={handleOptionSelected} />
         </View>
     );
 };
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     moodItem: {
         width: 60,
         height: 60,
+        marginHorizontal: 4,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 30,
