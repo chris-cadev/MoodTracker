@@ -1,3 +1,11 @@
+# Mood Tracker
+
+I started this app as part of the excellent tutorial [**React Native - Beyond Basics**](https://kadikraman.github.io/react-native-beyond-basics/docs/welcome/) by Kadi Kraman. It was a pleasure diving into the guide, exploring updated documentation, and adapting the project to modern APIs and best practices.
+
+This project also gave me the chance to revisit skills I had developed earlier in my career—back when I was working with React Native 0.59.10 (node@14.16.0) during my time on the Wrethink project. It's been both a technical and nostalgic journey.
+
+---
+
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
@@ -73,7 +81,7 @@ When you want to forcefully reload, for example to reset the state of your app, 
 - **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
 - **iOS**: Press <kbd>R</kbd> in iOS Simulator.
 
-## Congratulations! :tada:
+### Congratulations! :tada:
 
 You've successfully run and modified your React Native App. :partying_face:
 
