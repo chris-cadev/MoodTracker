@@ -1,15 +1,28 @@
 import React, { useCallback } from 'react';
 import { MoodOptionWithTimestamp } from '../types';
-import { LayoutAnimation, Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+    LayoutAnimation,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native';
 import { format } from 'date-fns';
 import { theme } from '../theme';
 import { useAppContext } from '../App.provider';
-import Reanimated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Reanimated, {
+    runOnJS,
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming,
+} from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 type MoodItemRowProps = {
     item: MoodOptionWithTimestamp;
 };
+
+const MAX_PAN = 80;
 
 export const MoodItemRow: React.FC<MoodItemRowProps> = ({ item }) => {
     const { deleteMood } = useAppContext();
@@ -18,18 +31,31 @@ export const MoodItemRow: React.FC<MoodItemRowProps> = ({ item }) => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         deleteMood(item);
     }, [deleteMood, item]);
+    const removeWithDelay = useCallback(() => {
+        setTimeout(handleDeletePress, 250);
+    }, [handleDeletePress]);
+
     const animatedStyle = useAnimatedStyle(() => ({
-        transform: [{ translateX: offset.value }]
+        transform: [{ translateX: offset.value }],
     }));
 
     const pan = Gesture.Pan()
-        .onUpdate((e) => {
-            offset.value = Math.floor(e.translationX)
+        .onUpdate(e => {
+            offset.value = Math.floor(e.translationX);
         })
         .onEnd(() => {
-            offset.value = withTiming(0);
-        })
+            const { value } = offset;
+            const absOffset = Math.abs(value);
+            const direction = Math.sign(value);
 
+            if (absOffset > MAX_PAN) {
+                offset.value = withTiming(direction * 2000, {}, () => {
+                    runOnJS(removeWithDelay)();
+                });
+                return;
+            }
+            offset.value = withTiming(0);
+        });
 
     return (
         <GestureDetector gesture={pan}>
