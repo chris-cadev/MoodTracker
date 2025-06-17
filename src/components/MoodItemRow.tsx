@@ -1,16 +1,12 @@
 import React, { useCallback } from 'react';
 import { MoodOptionWithTimestamp } from '../types';
-import {
-    LayoutAnimation,
-    Pressable,
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { format } from 'date-fns';
 import { theme } from '../theme';
 import { useAppContext } from '../App.provider';
 import Reanimated, {
+    Easing,
+    LinearTransition,
     runOnJS,
     useAnimatedStyle,
     useSharedValue,
@@ -28,12 +24,8 @@ export const MoodItemRow: React.FC<MoodItemRowProps> = ({ item }) => {
     const { deleteMood } = useAppContext();
     const offset = useSharedValue(0);
     const handleDeletePress = useCallback(() => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         deleteMood(item);
     }, [deleteMood, item]);
-    const removeWithDelay = useCallback(() => {
-        setTimeout(handleDeletePress, 250);
-    }, [handleDeletePress]);
 
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [{ translateX: offset.value }],
@@ -50,7 +42,7 @@ export const MoodItemRow: React.FC<MoodItemRowProps> = ({ item }) => {
 
             if (absOffset > MAX_PAN) {
                 offset.value = withTiming(direction * 2000, {}, () => {
-                    runOnJS(removeWithDelay)();
+                    runOnJS(handleDeletePress)();
                 });
                 return;
             }
@@ -59,7 +51,10 @@ export const MoodItemRow: React.FC<MoodItemRowProps> = ({ item }) => {
 
     return (
         <GestureDetector gesture={pan}>
-            <Reanimated.View style={[styles.moodItem, animatedStyle]}>
+            <Reanimated.View
+                layout={LinearTransition.easing(Easing.ease)}
+                style={[styles.moodItem, animatedStyle]}
+            >
                 <View style={styles.iconAndDescription}>
                     <Text style={styles.moodValue}>{item.mood.emoji}</Text>
                     <Text style={styles.moodDescription}>{item.mood.description}</Text>
